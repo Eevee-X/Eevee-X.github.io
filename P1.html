@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111;
+            min-height: 100vh;
+            color: white;
+            animation: breathe 10s infinite alternate;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        @keyframes breathe {
+            0% {
+                background-color: #111;
+            }
+            100% {
+                background-color: #333;
+            }
+        }
+
+       .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+       .project-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 10px;
+            max-width: 1500px;
+            width: 100%;
+        }
+
+       .project {
+            position: relative;
+            cursor: pointer;
+            border: 2px solid white;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.3);
+            width: 300px;
+            height: 675px;
+            justify-self: center;
+        }
+
+       .project:hover {
+            transform: scale(1.05);
+            background-color: rgba(0, 0, 0, 0.5);
+            border-color: #007aff;
+        }
+
+       .project img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+        }
+
+       .project img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f0f0f0;
+            animation: loading 1s infinite alternate;
+        }
+
+        @keyframes loading {
+            from {
+                opacity: 0.5;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+       .project p {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            margin: 0;
+            text-align: left;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+       .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+       .modal.closing {
+            animation: fadeOut 0.3s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+       .modal-content {
+            margin: auto;
+            display: block;
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 100vh;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: translateY(-50%) scale(0.8);
+            }
+            to {
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+       .close,
+       .prev,
+       .next {
+            cursor: pointer;
+            color: #007aff;
+            position: absolute;
+            transition: 0.3s;
+        }
+
+       .close {
+            top: 15px;
+            right: 35px;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+       .close:hover {
+            color: #0056b3;
+        }
+
+       .prev,
+       .next {
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+       .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+       .prev:hover,
+       .next:hover {
+            color: #0056b3;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        footer {
+            background-color: #111;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+       .works-title {
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+           .project-container {
+                grid-template-columns: 1fr;
+            }
+           .project {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h3 class="works-title">设计作品</h3>
+    <div class="main-content">
+        <div class="project-container">
+            <div class="project" onclick="openModal(0)">
+                <!-- 把这里的 src 属性值替换为你自己图片的路径 -->
+                <img src="1-1.jpg" alt="项目1"> 
+                <p>编织城市</p>
+            </div>
+            <div class="project" onclick="openModal(1)">
+                <!-- 把这里的 src 属性值替换为你自己图片的路径 -->
+                <img src="1-2.png" alt="项目2"> 
+                <p>未来空间栖息地</p>
+            </div>
+            <div class="project" onclick="openModal(2)">
+                <!-- 把这里的 src 属性值替换为你自己图片的路径 -->
+                <img src="1-3.jpg" alt="项目3"> 
+                <p>城市共享宅</p>
+            </div>
+            <div class="project" onclick="openModal(3)">
+                <!-- 把这里的 src 属性值替换为你自己图片的路径 -->
+                <img src="1-4.jpg" alt="项目4"> 
+                <p>天空之城</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <footer>
+        <p>&copy; 2025 NAN's PORTFOLIO. All rights reserved.</p>
+        <p>联系方式：759029830@qq.com</p>
+    </footer>
+
+    <script>
+        const modal = document.getElementById('myModal');
+        const modalImg = document.getElementById('img01');
+        const closeBtn = document.getElementsByClassName("close")[0];
+        let currentIndex = 0;
+
+        const projects = [
+            [
+                // 项目 1 模态框图片，替换为实际路径
+                "1-1-1.jpg",
+                "1-1-2.jpg",
+                "1-1-3.jpg"
+            ],
+            [
+                // 项目 2 模态框图片，替换为实际路径
+                "1-2-1.jpg",
+                "1-2-2.jpg",
+                "1-2-3.jpg"
+            ],
+            [
+                // 项目 3 模态框图片，替换为实际路径
+                "1-3-1.jpg",
+                "1-3-2.jpg",
+                "1-3-3.jpg"
+            ],
+            [
+                // 项目 4 模态框图片，替换为实际路径
+                "1-4-1.jpg",
+                "1-4-2.jpg",
+                "1-4-3.jpg"
+            ]
+        ];
+
+        function openModal(projectIndex) {
+            currentIndex = 0;
+            modal.style.display = "block";
+            modalImg.src = projects[projectIndex][currentIndex];
+        }
+
+        closeBtn.onclick = function () {
+            modal.classList.add('closing');
+            setTimeout(() => {
+                modal.style.display = "none";
+                modal.classList.remove('closing');
+            }, 300);
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.classList.add('closing');
+                setTimeout(() => {
+                    modal.style.display = "none";
+                    modal.classList.remove('closing');
+                }, 300);
+            }
+        }
+
+        function plusSlides(n) {
+            const projectIndex = getCurrentProjectIndex();
+            currentIndex += n;
+            if (currentIndex < 0) {
+                currentIndex = projects[projectIndex].length - 1;
+            } else if (currentIndex >= projects[projectIndex].length) {
+                currentIndex = 0;
+            }
+            modalImg.src = projects[projectIndex][currentIndex];
+        }
+
+        function getCurrentProjectIndex() {
+            for (let i = 0; i < projects.length; i++) {
+                if (projects[i].includes(modalImg.src)) {
+                    return i;
+                }
+            }
+            return 0;
+        }
+    </script>
+</body>
+
+</html>
+    
